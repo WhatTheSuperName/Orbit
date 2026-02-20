@@ -1,39 +1,36 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форумы | Темная сеть</title>
+    <title>Orbit | Forum</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            color: #e0e0e0;
+            background: #0a0a0a;
+            color: #fff;
             min-height: 100vh;
         }
 
         .navbar {
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem 2rem;
+            background: #121212;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #2a2a2a;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            background: linear-gradient(45deg, #bb86fc, #3700b3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #7c3aed;
         }
 
         .nav-links {
@@ -44,112 +41,88 @@
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
-            font-size: 1.1rem;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            background: #333;
-            color: #bb86fc;
+            background: #2a2a2a;
+            color: #7c3aed;
         }
 
-        .forums-container {
-            max-width: 1200px;
+        .container {
+            max-width: 1000px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
 
-        .forums-header {
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
         }
 
-        .forums-header h1 {
-            color: #bb86fc;
-            font-size: 2.5rem;
+        .header h1 {
+            color: #7c3aed;
+            font-size: 2rem;
         }
 
-        .create-topic-btn {
-            padding: 1rem 2rem;
-            background: #bb86fc;
+        .create-btn {
+            padding: 0.8rem 1.5rem;
+            background: #7c3aed;
             border: none;
-            border-radius: 12px;
-            color: #000;
+            border-radius: 8px;
+            color: #fff;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            transition: all 0.2s;
         }
 
-        .create-topic-btn:hover {
-            background: #9b66dc;
-            transform: scale(1.05);
+        .create-btn:hover {
+            background: #6d28d9;
         }
 
-        .topics-list {
+        .topics {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
-        .topic-card {
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #333;
-            border-radius: 16px;
+        .topic {
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
             padding: 1.5rem;
-            transition: all 0.3s ease;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .topic-card:hover {
-            border-color: #bb86fc;
-            transform: translateX(10px);
-            box-shadow: 0 5px 20px rgba(187, 134, 252, 0.2);
+        .topic:hover {
+            border-color: #7c3aed;
+            transform: translateX(5px);
         }
 
         .topic-header {
             display: flex;
             justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .topic-title {
-            font-size: 1.4rem;
-            color: #bb86fc;
-            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: #7c3aed;
+        }
+
+        .topic-likes {
+            color: #ec4899;
         }
 
         .topic-meta {
             display: flex;
             gap: 1rem;
-            color: #888;
+            color: #666;
             font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .topic-stats {
-            display: flex;
-            gap: 1.5rem;
-            color: #888;
-        }
-
-        .topic-likes {
-            color: #ff4081;
-            font-weight: 600;
-        }
-
-        .topic-author {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .modal {
@@ -160,21 +133,20 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
             z-index: 1000;
         }
 
         .modal-content {
-            background: #2a2a2a;
+            background: #121212;
             max-width: 500px;
             margin: 100px auto;
             padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid #404040;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
         }
 
         .modal-content h2 {
-            color: #bb86fc;
+            color: #7c3aed;
             margin-bottom: 1.5rem;
         }
 
@@ -183,17 +155,10 @@
             width: 100%;
             padding: 1rem;
             margin-bottom: 1rem;
-            background: #333;
-            border: 1px solid #404040;
+            background: #1e1e1e;
+            border: 1px solid #333;
             border-radius: 8px;
-            color: #e0e0e0;
-            font-size: 1rem;
-        }
-
-        .modal-content input:focus,
-        .modal-content textarea:focus {
-            outline: none;
-            border-color: #bb86fc;
+            color: #fff;
         }
 
         .modal-buttons {
@@ -207,29 +172,20 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .modal-buttons .save-btn {
-            background: #bb86fc;
-            color: #000;
+        .save-btn {
+            background: #7c3aed;
+            color: #fff;
         }
 
-        .modal-buttons .cancel-btn {
-            background: #404040;
-            color: #e0e0e0;
-        }
-
-        .modal-buttons button:hover {
-            transform: scale(1.05);
+        .cancel-btn {
+            background: #2a2a2a;
+            color: #fff;
         }
 
         .topic-detail {
             display: none;
-            background: rgba(30, 30, 30, 0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 2rem;
         }
 
         .topic-detail.active {
@@ -238,30 +194,23 @@
 
         .back-btn {
             background: none;
-            border: 1px solid #bb86fc;
-            color: #bb86fc;
+            border: 1px solid #7c3aed;
+            color: #7c3aed;
             padding: 0.5rem 1rem;
             border-radius: 8px;
             cursor: pointer;
             margin-bottom: 1rem;
-            transition: all 0.3s ease;
         }
 
-        .back-btn:hover {
-            background: #bb86fc;
-            color: #000;
-        }
-
-        .topic-posts {
+        .posts {
             margin-top: 2rem;
         }
 
-        .post-item {
-            background: #2a2a2a;
-            border-radius: 12px;
+        .post {
+            background: #1a1a1a;
+            border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 1rem;
-            border: 1px solid #404040;
         }
 
         .post-header {
@@ -271,84 +220,71 @@
             color: #888;
         }
 
-        .post-author {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .post-likes {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .like-btn {
             background: none;
             border: none;
-            color: #ff4081;
+            color: #ec4899;
             cursor: pointer;
             font-size: 1.2rem;
         }
 
-        .reply-input {
+        .reply-area {
             margin-top: 2rem;
         }
 
-        .reply-input textarea {
+        .reply-area textarea {
             width: 100%;
             padding: 1rem;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            border-radius: 12px;
-            color: #e0e0e0;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
             margin-bottom: 1rem;
-            resize: vertical;
         }
 
-        .reply-input button {
+        .reply-area button {
             padding: 0.8rem 2rem;
-            background: #bb86fc;
+            background: #7c3aed;
             border: none;
             border-radius: 8px;
-            color: #000;
+            color: #fff;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">🌑 Темная сеть</div>
+        <div class="logo">ORBIT</div>
         <div class="nav-links">
-            <a href="main.html">Главная</a>
-            <a href="messenger.html">Мессенджер</a>
-            <a href="forum.html">Форумы</a>
-            <a href="shop.html">Маркетплейс</a>
+            <a href="main.html">Home</a>
+            <a href="messenger.html">Messenger</a>
+            <a href="forum.html">Forum</a>
+            <a href="shop.html">Market</a>
         </div>
     </nav>
 
-    <div class="forums-container">
-        <div class="forums-header">
-            <h1>Форумы сообщества</h1>
-            <button class="create-topic-btn" onclick="showCreateTopicModal()">➕ Создать тему</button>
+    <div class="container">
+        <div class="header" id="mainHeader">
+            <h1>Forum</h1>
+            <button class="create-btn" onclick="showCreateModal()">+ New Topic</button>
         </div>
 
-        <div class="topics-list" id="topicsList"></div>
+        <div class="topics" id="topicsList"></div>
 
         <div class="topic-detail" id="topicDetail">
-            <button class="back-btn" onclick="hideTopicDetail()">← Назад к темам</button>
-            <div id="topicDetailContent"></div>
+            <button class="back-btn" onclick="hideDetail()">← Back</button>
+            <div id="topicContent"></div>
         </div>
     </div>
 
-    <div class="modal" id="createTopicModal">
+    <div class="modal" id="createModal">
         <div class="modal-content">
-            <h2>Создать новую тему</h2>
-            <input type="text" id="newTopicTitle" placeholder="Название темы">
-            <textarea id="newTopicContent" placeholder="Первое сообщение..."></textarea>
+            <h2>Create New Topic</h2>
+            <input type="text" id="topicTitle" placeholder="Title">
+            <textarea id="topicMessage" placeholder="Your message..." rows="5"></textarea>
             <div class="modal-buttons">
-                <button class="cancel-btn" onclick="hideCreateTopicModal()">Отмена</button>
-                <button class="save-btn" onclick="createTopic()">Создать</button>
+                <button class="cancel-btn" onclick="hideCreateModal()">Cancel</button>
+                <button class="save-btn" onclick="createTopic()">Create</button>
             </div>
         </div>
     </div>
