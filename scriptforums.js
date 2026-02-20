@@ -1,180 +1,156 @@
-let appData = JSON.parse(localStorage.getItem('appData')) || window.appData;
-let currentTopicId = null;
+let data = JSON.parse(localStorage.getItem('orbitData')) || window.orbitData;
+let currentTopic = null;
 
 function saveData() {
-    localStorage.setItem('appData', JSON.stringify(appData));
+    localStorage.setItem('orbitData', JSON.stringify(data));
 }
 
-function showCreateTopicModal() {
-    document.getElementById('createTopicModal').style.display = 'block';
+function showCreateModal() {
+    document.getElementById('createModal').style.display = 'block';
 }
 
-function hideCreateTopicModal() {
-    document.getElementById('createTopicModal').style.display = 'none';
-    document.getElementById('newTopicTitle').value = '';
-    document.getElementById('newTopicContent').value = '';
+function hideCreateModal() {
+    document.getElementById('createModal').style.display = 'none';
+    document.getElementById('topicTitle').value = '';
+    document.getElementById('topicMessage').value = '';
 }
 
 function createTopic() {
-    const title = document.getElementById('newTopicTitle').value.trim();
-    const content = document.getElementById('newTopicContent').value.trim();
+    const title = document.getElementById('topicTitle').value.trim();
+    const msg = document.getElementById('topicMessage').value.trim();
     
-    if (!title || !content) {
-        alert('Заполните все поля');
-        return;
-    }
+    if (!title || !msg) return;
 
-    const newTopic = {
-        id: appData.forumTopics.length + 1,
+    data.forumTopics.push({
+        id: data.forumTopics.length + 1,
         title: title,
-        author: appData.currentUser.id,
+        author: data.currentUser.id,
         likes: 0,
         createdAt: Date.now(),
         messages: [{
             id: 1,
-            author: appData.currentUser.id,
-            text: content,
+            author: data.currentUser.id,
+            text: msg,
             likes: 0,
             timestamp: Date.now()
         }]
-    };
+    });
 
-    appData.forumTopics.push(newTopic);
     saveData();
-    hideCreateTopicModal();
+    hideCreateModal();
     renderTopics();
 }
 
 function renderTopics() {
-    const topicsList = document.getElementById('topicsList');
-    if (!topicsList) return;
+    const list = document.getElementById('topicsList');
+    if (!list) return;
 
-    const sortedTopics = [...appData.forumTopics].sort((a, b) => b.likes - a.likes);
+    const sorted = [...data.forumTopics].sort((a, b) => b.likes - a.likes);
 
-    topicsList.innerHTML = sortedTopics.map(topic => {
-        const author = appData.users.find(u => u.id === topic.author);
-        const messageCount = topic.messages.length;
-        const lastMessage = topic.messages[topic.messages.length - 1];
-        const lastActivity = lastMessage ? new Date(lastMessage.timestamp).toLocaleDateString() : new Date(topic.createdAt).toLocaleDateString();
-
+    list.innerHTML = sorted.map(t => {
+        const author = data.users.find(u => u.id === t.author);
         return `
-            <div class="topic-card" onclick="showTopicDetail(${topic.id})">
+            <div class="topic" onclick="showTopic(${t.id})">
                 <div class="topic-header">
-                    <h3 class="topic-title">${topic.title}</h3>
-                    <div class="topic-likes">❤️ ${topic.likes}</div>
+                    <span class="topic-title">${t.title}</span>
+                    <span class="topic-likes">❤️ ${t.likes}</span>
                 </div>
                 <div class="topic-meta">
-                    <span class="topic-author">${author ? author.avatar : '👤'} ${author ? author.name : 'Неизвестно'}</span>
-                    <span>📅 ${new Date(topic.createdAt).toLocaleDateString()}</span>
-                    <span>💬 ${messageCount} сообщений</span>
-                    <span>🕐 ${lastActivity}</span>
+                    <span>${author ? author.avatar : '👤'} ${author ? author.name : 'Unknown'}</span>
+                    <span>📅 ${new Date(t.createdAt).toLocaleDateString()}</span>
+                    <span>💬 ${t.messages.length}</span>
                 </div>
             </div>
         `;
     }).join('');
 }
 
-function showTopicDetail(topicId) {
-    currentTopicId = topicId;
-    const topic = appData.forumTopics.find(t => t.id === topicId);
+function showTopic(id) {
+    currentTopic = id;
+    const topic = data.forumTopics.find(t => t.id === id);
     if (!topic) return;
 
-    document.querySelector('.topics-list').style.display = 'none';
-    document.querySelector('.forums-header').style.display = 'none';
+    document.getElementById('mainHeader').style.display = 'none';
+    document.getElementById('topicsList').style.display = 'none';
     document.getElementById('topicDetail').classList.add('active');
 
-    const author = appData.users.find(u => u.id === topic.author);
+    const author = data.users.find(u => u.id === topic.author);
     
     let html = `
-        <h2 style="color: #bb86fc; margin-bottom: 1rem;">${topic.title}</h2>
-        <div style="color: #888; margin-bottom: 2rem;">
-            <span>${author ? author.avatar : '👤'} ${author ? author.name : 'Неизвестно'}</span>
-            <span style="margin-left: 1rem;">❤️ ${topic.likes}</span>
-            <span style="margin-left: 1rem;">📅 ${new Date(topic.createdAt).toLocaleDateString()}</span>
+        <h2 style="color: #7c3aed;">${topic.title}</h2>
+        <div style="color: #666; margin-bottom: 2rem;">
+            ${author ? author.avatar : '👤'} ${author ? author.name : 'Unknown'} • ❤️ ${topic.likes} • 📅 ${new Date(topic.createdAt).toLocaleDateString()}
         </div>
-        <div class="topic-posts">
+        <div class="posts">
     `;
 
-    topic.messages.forEach(msg => {
-        const msgAuthor = appData.users.find(u => u.id === msg.author);
+    topic.messages.forEach(m => {
+        const msgAuthor = data.users.find(u => u.id === m.author);
         html += `
-            <div class="post-item">
+            <div class="post">
                 <div class="post-header">
-                    <div class="post-author">
-                        <span>${msgAuthor ? msgAuthor.avatar : '👤'}</span>
-                        <span>${msgAuthor ? msgAuthor.name : 'Неизвестно'}</span>
-                    </div>
-                    <div class="post-likes">
-                        <button class="like-btn" onclick="likeMessage(${topic.id}, ${msg.id})">❤️</button>
-                        <span>${msg.likes}</span>
-                    </div>
+                    <span>${msgAuthor ? msgAuthor.avatar : '👤'} ${msgAuthor ? msgAuthor.name : 'Unknown'}</span>
+                    <span>
+                        <button class="like-btn" onclick="likeMessage(${topic.id}, ${m.id})">❤️</button>
+                        ${m.likes}
+                    </span>
                 </div>
-                <div class="post-content">
-                    ${msg.text}
-                </div>
-                <div style="color: #666; font-size: 0.8rem; margin-top: 0.5rem;">
-                    ${new Date(msg.timestamp).toLocaleString()}
-                </div>
+                <div>${m.text}</div>
+                <div style="color: #444; font-size: 0.8rem; margin-top: 0.5rem;">${new Date(m.timestamp).toLocaleString()}</div>
             </div>
         `;
     });
 
     html += `
         </div>
-        <div class="reply-input">
-            <textarea id="replyText" placeholder="Написать сообщение..."></textarea>
-            <button onclick="addReply(${topicId})">Ответить</button>
+        <div class="reply-area">
+            <textarea id="replyText" placeholder="Write a reply..."></textarea>
+            <button onclick="addReply(${topic.id})">Reply</button>
         </div>
     `;
 
-    document.getElementById('topicDetailContent').innerHTML = html;
+    document.getElementById('topicContent').innerHTML = html;
 }
 
-function hideTopicDetail() {
-    currentTopicId = null;
-    document.querySelector('.topics-list').style.display = 'flex';
-    document.querySelector('.forums-header').style.display = 'flex';
+function hideDetail() {
+    currentTopic = null;
+    document.getElementById('mainHeader').style.display = 'flex';
+    document.getElementById('topicsList').style.display = 'flex';
     document.getElementById('topicDetail').classList.remove('active');
 }
 
 function addReply(topicId) {
-    const replyText = document.getElementById('replyText').value.trim();
-    if (!replyText) return;
+    const text = document.getElementById('replyText').value.trim();
+    if (!text) return;
 
-    const topic = appData.forumTopics.find(t => t.id === topicId);
+    const topic = data.forumTopics.find(t => t.id === topicId);
     if (!topic) return;
 
-    const newMessage = {
+    topic.messages.push({
         id: topic.messages.length + 1,
-        author: appData.currentUser.id,
-        text: replyText,
+        author: data.currentUser.id,
+        text: text,
         likes: 0,
         timestamp: Date.now()
-    };
+    });
 
-    topic.messages.push(newMessage);
     saveData();
-    showTopicDetail(topicId);
+    showTopic(topicId);
 }
 
 function likeMessage(topicId, messageId) {
-    const topic = appData.forumTopics.find(t => t.id === topicId);
+    const topic = data.forumTopics.find(t => t.id === topicId);
     if (!topic) return;
 
-    const message = topic.messages.find(m => m.id === messageId);
-    if (message) {
-        message.likes++;
+    const msg = topic.messages.find(m => m.id === messageId);
+    if (msg) {
+        msg.likes++;
         topic.likes++;
         saveData();
-        showTopicDetail(topicId);
+        showTopic(topicId);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderTopics();
-    
-    window.addEventListener('focus', () => {
-        appData = JSON.parse(localStorage.getItem('appData')) || appData;
-        renderTopics();
-    });
 });
