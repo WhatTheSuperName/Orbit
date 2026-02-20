@@ -1,18 +1,75 @@
-let data = JSON.parse(localStorage.getItem('orbitData')) || window.orbitData;
+let orbitDB = JSON.parse(localStorage.getItem('orbitDB')) || { users: [], forumTopics: [], currentUser: null };
 let currentTopic = null;
 
+function loadData() {
+    orbitDB = JSON.parse(localStorage.getItem('orbitDB')) || orbitDB;
+    updateNav();
+    renderForum();
+}
+
 function saveData() {
-    localStorage.setItem('orbitData', JSON.stringify(data));
+    localStorage.setItem('orbitDB', JSON.stringify(orbitDB));
+}
+
+function updateNav() {
+    const nav = document.getElementById('navLinks');
+    if (orbitDB.currentUser) {
+        nav.innerHTML = `
+            <span class="user-name">${orbitDB.currentUser.avatar} ${orbitDB.currentUser.name}</span>
+            <a href="main.html">Home</a>
+            <a href="messenger.html">Messenger</a>
+            <a href="forum.html">Forum</a>
+            <a href="shop.html">Market</a>
+        `;
+    } else {
+        nav.innerHTML = `<a href="main.html">Home</a>`;
+    }
+}
+
+function renderForum() {
+    const container = document.getElementById('forumContainer');
+    
+    if (!orbitDB.currentUser) {
+        container.innerHTML = `
+            <div class="no-auth">
+                <h2>Please login to use Forum</h2>
+                <button onclick="window.location.href='main.html'">Go to Login</button>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = `
+        <div class="header" id="mainHeader">
+            <h1>Forum</h1>
+            <button class="create-btn" onclick="showCreateModal()">+ New Topic</button>
+        </div>
+        <div class="topics" id="topicsList"></div>
+        <div class="topic-detail" id="topicDetail">
+            <button class="back-btn" onclick="hideDetail()">← Back</button>
+            <div id="topicContent"></div>
+        </div>
+    `;
+    
+    renderTopics();
 }
 
 function showCreateModal() {
-    document.getElementById('createModal').style.display = 'block';
-}
-
-function hideCreateModal() {
-    document.getElementById('createModal').style.display = 'none';
-    document.getElementById('topicTitle').value = '';
-    document.getElementById('topicMessage').value = '';
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'createModal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Create New Topic</h2>
+            <input type="text" id="topicTitle" placeholder="Title">
+            <textarea id="topicMessage" placeholder="Your message..." rows="5"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="this.closest('.modal').remove()">Cancel</button>
+                <button class="save-btn" onclick="createTopic()">Create</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 function createTopic() {
@@ -21,15 +78,15 @@ function createTopic() {
     
     if (!title || !msg) return;
 
-    data.forumTopics.push({
-        id: data.forumTopics.length + 1,
+    orbitDB.forumTopics.push({
+        id: orbitDB.forumTopics.length + 1,
         title: title,
-        author: data.currentUser.id,
+        author: orbitDB.currentUser.id,
         likes: 0,
         createdAt: Date.now(),
         messages: [{
             id: 1,
-            author: data.currentUser.id,
+            author: orbitDB.currentUser.id,
             text: msg,
             likes: 0,
             timestamp: Date.now()
@@ -37,7 +94,7 @@ function createTopic() {
     });
 
     saveData();
-    hideCreateModal();
+    document.getElementById('createModal').remove();
     renderTopics();
 }
 
@@ -45,10 +102,10 @@ function renderTopics() {
     const list = document.getElementById('topicsList');
     if (!list) return;
 
-    const sorted = [...data.forumTopics].sort((a, b) => b.likes - a.likes);
+    const sorted = [...orbitDB.forumTopics].sort((a, b) => b.likes - a.likes);
 
     list.innerHTML = sorted.map(t => {
-        const author = data.users.find(u => u.id === t.author);
+        const author = orbitDB.users.find(u => u.id === t.author);
         return `
             <div class="topic" onclick="showTopic(${t.id})">
                 <div class="topic-header">
@@ -67,14 +124,14 @@ function renderTopics() {
 
 function showTopic(id) {
     currentTopic = id;
-    const topic = data.forumTopics.find(t => t.id === id);
+    const topic = orbitDB.forumTopics.find(t => t.id === id);
     if (!topic) return;
 
     document.getElementById('mainHeader').style.display = 'none';
     document.getElementById('topicsList').style.display = 'none';
     document.getElementById('topicDetail').classList.add('active');
 
-    const author = data.users.find(u => u.id === topic.author);
+    const author = orbitDB.users.find(u => u.id === topic.author);
     
     let html = `
         <h2 style="color: #7c3aed;">${topic.title}</h2>
@@ -85,7 +142,7 @@ function showTopic(id) {
     `;
 
     topic.messages.forEach(m => {
-        const msgAuthor = data.users.find(u => u.id === m.author);
+        const msgAuthor = orbitDB.users.find(u => u.id === m.author);
         html += `
             <div class="post">
                 <div class="post-header">
@@ -123,12 +180,12 @@ function addReply(topicId) {
     const text = document.getElementById('replyText').value.trim();
     if (!text) return;
 
-    const topic = data.forumTopics.find(t => t.id === topicId);
+    const topic = orbitDB.forumTopics.find(t => t.id === topicId);
     if (!topic) return;
 
     topic.messages.push({
         id: topic.messages.length + 1,
-        author: data.currentUser.id,
+        author: orbitDB.currentUser.id,
         text: text,
         likes: 0,
         timestamp: Date.now()
@@ -139,7 +196,7 @@ function addReply(topicId) {
 }
 
 function likeMessage(topicId, messageId) {
-    const topic = data.forumTopics.find(t => t.id === topicId);
+    const topic = orbitDB.forumTopics.find(t => t.id === topicId);
     if (!topic) return;
 
     const msg = topic.messages.find(m => m.id === messageId);
@@ -151,6 +208,13 @@ function likeMessage(topicId, messageId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderTopics();
-});
+// Auto-refresh every 5 seconds
+setInterval(() => {
+    if (orbitDB.currentUser) {
+        loadData();
+        if (currentTopic) showTopic(currentTopic);
+    }
+}, 5000);
+
+// Initialize
+loadData();
