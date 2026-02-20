@@ -38,6 +38,7 @@
         .nav-links {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -50,6 +51,11 @@
         .nav-links a:hover {
             background: #2a2a2a;
             color: #7c3aed;
+        }
+
+        .user-name {
+            color: #7c3aed;
+            font-weight: 500;
         }
 
         .messenger {
@@ -101,6 +107,7 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 1px solid transparent;
+            position: relative;
         }
 
         .contact:hover {
@@ -110,6 +117,15 @@
         .contact.active {
             background: #1e1e1e;
             border-color: #7c3aed;
+        }
+
+        .contact.unread::after {
+            content: '●';
+            color: #7c3aed;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .contact-avatar {
@@ -236,6 +252,25 @@
             background: #6d28d9;
         }
 
+        .no-auth {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .no-auth button {
+            padding: 1rem 3rem;
+            background: #7c3aed;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -253,34 +288,10 @@
 <body>
     <nav class="navbar">
         <div class="logo">ORBIT</div>
-        <div class="nav-links">
-            <a href="main.html">Home</a>
-            <a href="messenger.html">Messenger</a>
-            <a href="forum.html">Forum</a>
-            <a href="shop.html">Market</a>
-        </div>
+        <div class="nav-links" id="navLinks"></div>
     </nav>
 
-    <div class="messenger">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>Contacts</h2>
-                <input type="text" class="search" placeholder="Search contacts...">
-            </div>
-            <div class="contacts" id="contactsList"></div>
-        </div>
-
-        <div class="chat">
-            <div class="chat-header">
-                <h3 id="currentChat">Select a contact</h3>
-            </div>
-            <div class="messages" id="messagesList"></div>
-            <div class="input-area">
-                <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
-                <button class="send-btn" id="sendBtn">Send</button>
-            </div>
-        </div>
-    </div>
+    <div class="messenger" id="messengerContainer"></div>
 
     <script src="scriptmessenger.js"></script>
 </body>
