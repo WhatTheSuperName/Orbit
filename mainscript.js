@@ -1,40 +1,39 @@
-// Глобальное хранилище данных
-window.appData = {
+window.orbitData = {
     users: [
-        { id: 1, name: 'Теневой_Странник', avatar: '👤', status: 'online' },
-        { id: 2, name: 'Кибер_Мудрец', avatar: '🧙', status: 'offline' },
-        { id: 3, name: 'Ночной_Хакер', avatar: '👾', status: 'online' },
-        { id: 4, name: 'Цифровой_Художник', avatar: '🎨', status: 'online' }
+        { id: 1, name: 'ShadowWalker', avatar: '👤', status: 'online' },
+        { id: 2, name: 'CyberWizard', avatar: '🧙', status: 'offline' },
+        { id: 3, name: 'NightHacker', avatar: '👾', status: 'online' },
+        { id: 4, name: 'DigitalArtist', avatar: '🎨', status: 'online' }
     ],
     messages: [
-        { id: 1, from: 1, to: 2, text: 'Привет, как дела?', timestamp: Date.now() - 3600000 },
-        { id: 2, from: 2, to: 1, text: 'Отлично, осваиваю темную сеть!', timestamp: Date.now() - 1800000 }
+        { id: 1, from: 1, to: 2, text: 'Hey, how are you?', timestamp: Date.now() - 3600000 },
+        { id: 2, from: 2, to: 1, text: 'Good, exploring Orbit!', timestamp: Date.now() - 1800000 }
     ],
     forumTopics: [
         { 
             id: 1, 
-            title: 'Как защитить свою анонимность?', 
+            title: 'How to stay anonymous online?', 
             author: 1, 
             likes: 15, 
             createdAt: Date.now() - 86400000,
             messages: [
-                { id: 1, author: 2, text: 'Используй VPN и Tor', likes: 5, timestamp: Date.now() - 86000000 },
-                { id: 2, author: 3, text: 'Не забывай про приватные браузеры', likes: 3, timestamp: Date.now() - 85000000 }
+                { id: 1, author: 2, text: 'Use VPN and Tor browser', likes: 5, timestamp: Date.now() - 86000000 },
+                { id: 2, author: 3, text: 'Dont forget about private mode', likes: 3, timestamp: Date.now() - 85000000 }
             ]
         },
         { 
             id: 2, 
-            title: 'Лучшие цифровые услуги 2024', 
+            title: 'Best digital services 2024', 
             author: 2, 
             likes: 25, 
             createdAt: Date.now() - 172800000,
             messages: [
-                { id: 3, author: 1, text: 'Дизайн и разработка сейчас в топе', likes: 8, timestamp: Date.now() - 170000000 }
+                { id: 3, author: 1, text: 'Web development is booming', likes: 8, timestamp: Date.now() - 170000000 }
             ]
         },
         { 
             id: 3, 
-            title: 'Обсуждение новых технологий', 
+            title: 'New tech discussions', 
             author: 3, 
             likes: 8, 
             createdAt: Date.now() - 43200000,
@@ -44,48 +43,46 @@ window.appData = {
     marketplaceListings: [
         { 
             id: 1, 
-            title: 'Разработка Telegram ботов', 
-            description: 'Создам бота любой сложности. Python, aiogram.', 
-            price: '100$', 
+            title: 'Telegram Bot Development', 
+            description: 'Custom bots for any purpose. Python, aiogram.', 
+            price: '$100', 
             seller: 1,
-            category: 'Разработка',
+            category: 'Development',
             createdAt: Date.now() - 172800000
         },
         { 
             id: 2, 
-            title: 'Дизайн логотипов и айдентика', 
-            description: 'Уникальный дизайн для вашего проекта. 3 варианта.', 
-            price: '80$', 
+            title: 'Logo Design', 
+            description: 'Unique brand identity design. 3 concepts.', 
+            price: '$80', 
             seller: 2,
-            category: 'Дизайн',
+            category: 'Design',
             createdAt: Date.now() - 86400000
         },
         { 
             id: 3, 
-            title: 'SEO продвижение сайтов', 
-            description: 'Выведу ваш сайт в топ. Гарантия качества.', 
-            price: '150$', 
+            title: 'SEO Optimization', 
+            description: 'Top rankings on Google guaranteed.', 
+            price: '$150', 
             seller: 3,
-            category: 'Маркетинг',
+            category: 'Marketing',
             createdAt: Date.now() - 43200000
         }
     ],
-    currentUser: { id: 1, name: 'Теневой_Странник', avatar: '👤' }
+    currentUser: { id: 1, name: 'ShadowWalker', avatar: '👤' }
 };
 
-// Обновление статистики на главной
 function updateStats() {
     const userCount = document.getElementById('userCount');
     const topicCount = document.getElementById('topicCount');
     const listingCount = document.getElementById('listingCount');
     
-    if (userCount) userCount.textContent = window.appData.users.length;
-    if (topicCount) topicCount.textContent = window.appData.forumTopics.length;
-    if (listingCount) listingCount.textContent = window.appData.marketplaceListings.length;
+    if (userCount) userCount.textContent = window.orbitData.users.length;
+    if (topicCount) topicCount.textContent = window.orbitData.forumTopics.length;
+    if (listingCount) listingCount.textContent = window.orbitData.marketplaceListings.length;
 }
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     updateStats();
-    localStorage.setItem('appData', JSON.stringify(window.appData));
+    localStorage.setItem('orbitData', JSON.stringify(window.orbitData));
 });
