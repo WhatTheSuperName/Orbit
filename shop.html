@@ -1,1 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маркетплейс | Темная сеть</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #bb86fc, #3700b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #333;
+            color: #bb86fc;
+        }
+
+        .shop-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .shop-header h1 {
+            color: #bb86fc;
+            font-size: 2.5rem;
+        }
+
+        .create-listing-btn {
+            padding: 1rem 2rem;
+            background: #bb86fc;
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .create-listing-btn:hover {
+            background: #9b66dc;
+            transform: scale(1.05);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 0.8rem;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            color: #e0e0e0;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-select {
+            padding: 0.8rem;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            color: #e0e0e0;
+            min-width: 150px;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .listing-card {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-10px);
+            border-color: #bb86fc;
+            box-shadow: 0 10px 30px rgba(187, 134, 252, 0.2);
+        }
+
+        .listing-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: #404040;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .listing-title {
+            font-size: 1.4rem;
+            color: #bb86fc;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-description {
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .listing-price {
+            font-size: 1.5rem;
+            color: #4caf50;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .listing-seller {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #2a2a2a;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid #404040;
+        }
+
+        .modal-content h2 {
+            color: #bb86fc;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #333;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        .modal-content textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-buttons .save-btn {
+            background: #bb86fc;
+            color: #000;
+        }
+
+        .modal-buttons .cancel-btn {
+            background: #404040;
+            color: #e0e0e0;
+        }
+
+        .contact-seller-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #bb86fc;
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-seller-btn:hover {
+            background: #9b66dc;
+        }
+
+        @media (max-width: 768px) {
+            .shop-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🌑 Темная сеть</div>
+        <div class="nav-links">
+            <a href="main.html">Главная</a>
+            <a href="messenger.html">Мессенджер</a>
+            <a href="forum.html">Форумы</a>
+            <a href="shop.html">Маркетплейс</a>
+        </div>
+    </nav>
+
+    <div class="shop-container">
+        <div class="shop-header">
+            <h1>Маркетплейс цифровых услуг</h1>
+            <button class="create-listing-btn" onclick="showCreateListingModal()">➕ Создать объявление</button>
+        </div>
+
+        <div class="filters">
+            <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию...">
+            <select class="filter-select" id="categoryFilter">
+                <option value="all">Все категории</option>
+                <option value="Разработка">Разработка</option>
+                <option value="Дизайн">Дизайн</option>
+                <option value="Маркетинг">Маркетинг</option>
+                <option value="Тексты">Тексты</option>
+                <option value="Консультации">Консультации</option>
+            </select>
+            <select class="filter-select" id="sortFilter">
+                <option value="newest">Сначала новые</option>
+                <option value="oldest">Сначала старые</option>
+                <option value="price_asc">Цена (по возрастанию)</option>
+                <option value="price_desc">Цена (по убыванию)</option>
+            </select>
+        </div>
+
+        <div class="listings-grid" id="listingsGrid"></div>
+    </div>
+
+    <div class="modal" id="createListingModal">
+        <div class="modal-content">
+            <h2>Создать объявление</h2>
+            <input type="text" id="newListingTitle" placeholder="Название услуги">
+            <textarea id="newListingDescription" placeholder="Описание..."></textarea>
+            <input type="text" id="newListingPrice" placeholder="Цена (например: 100$)">
+            <select id="newListingCategory">
+                <option value="Разработка">Разработка</option>
+                <option value="Дизайн">Дизайн</option>
+                <option value="Маркетинг">Маркетинг</option>
+                <option value="Тексты">Тексты</option>
+                <option value="Консультации">Консультации</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="hideCreateListingModal()">Отмена</button>
+                <button class="save-btn" onclick="createListing()">Создать</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptshop.js"></script>
+</body>
+</html>
