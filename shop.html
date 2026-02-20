@@ -1,39 +1,36 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Маркетплейс | Темная сеть</title>
+    <title>Orbit | Marketplace</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            color: #e0e0e0;
+            background: #0a0a0a;
+            color: #fff;
             min-height: 100vh;
         }
 
         .navbar {
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem 2rem;
+            background: #121212;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #2a2a2a;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            background: linear-gradient(45deg, #bb86fc, #3700b3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #7c3aed;
         }
 
         .nav-links {
@@ -44,52 +41,46 @@
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
-            font-size: 1.1rem;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            background: #333;
-            color: #bb86fc;
+            background: #2a2a2a;
+            color: #7c3aed;
         }
 
-        .shop-container {
+        .container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
 
-        .shop-header {
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
         }
 
-        .shop-header h1 {
-            color: #bb86fc;
-            font-size: 2.5rem;
+        .header h1 {
+            color: #7c3aed;
+            font-size: 2rem;
         }
 
-        .create-listing-btn {
-            padding: 1rem 2rem;
-            background: #bb86fc;
+        .create-btn {
+            padding: 0.8rem 1.5rem;
+            background: #7c3aed;
             border: none;
-            border-radius: 12px;
-            color: #000;
+            border-radius: 8px;
+            color: #fff;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            transition: all 0.2s;
         }
 
-        .create-listing-btn:hover {
-            background: #9b66dc;
-            transform: scale(1.05);
+        .create-btn:hover {
+            background: #6d28d9;
         }
 
         .filters {
@@ -100,80 +91,78 @@
         }
 
         .filter-input {
-            padding: 0.8rem;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            border-radius: 8px;
-            color: #e0e0e0;
             flex: 1;
             min-width: 200px;
+            padding: 0.8rem;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
         }
 
         .filter-select {
             padding: 0.8rem;
-            background: #2a2a2a;
-            border: 1px solid #404040;
+            background: #1e1e1e;
+            border: 1px solid #333;
             border-radius: 8px;
-            color: #e0e0e0;
+            color: #fff;
             min-width: 150px;
         }
 
-        .listings-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
         }
 
-        .listing-card {
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #333;
-            border-radius: 20px;
+        .card {
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
             padding: 1.5rem;
-            transition: all 0.3s ease;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .listing-card:hover {
-            transform: translateY(-10px);
-            border-color: #bb86fc;
-            box-shadow: 0 10px 30px rgba(187, 134, 252, 0.2);
+        .card:hover {
+            border-color: #7c3aed;
+            transform: translateY(-5px);
         }
 
-        .listing-category {
+        .category {
             display: inline-block;
-            padding: 0.3rem 1rem;
-            background: #404040;
+            padding: 0.2rem 1rem;
+            background: #2a2a2a;
             border-radius: 20px;
             font-size: 0.8rem;
             margin-bottom: 1rem;
         }
 
-        .listing-title {
-            font-size: 1.4rem;
-            color: #bb86fc;
+        .title {
+            font-size: 1.2rem;
+            color: #7c3aed;
             margin-bottom: 0.5rem;
         }
 
-        .listing-description {
-            color: #b0b0b0;
+        .desc {
+            color: #a0a0a0;
             margin-bottom: 1rem;
             line-height: 1.5;
         }
 
-        .listing-price {
-            font-size: 1.5rem;
-            color: #4caf50;
+        .price {
+            font-size: 1.3rem;
+            color: #10b981;
             font-weight: 600;
             margin-bottom: 1rem;
         }
 
-        .listing-seller {
+        .seller {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #888;
-            border-top: 1px solid #333;
+            color: #666;
+            border-top: 1px solid #2a2a2a;
             padding-top: 1rem;
         }
 
@@ -185,21 +174,20 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
             z-index: 1000;
         }
 
         .modal-content {
-            background: #2a2a2a;
+            background: #121212;
             max-width: 500px;
             margin: 100px auto;
             padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid #404040;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
         }
 
         .modal-content h2 {
-            color: #bb86fc;
+            color: #7c3aed;
             margin-bottom: 1.5rem;
         }
 
@@ -209,16 +197,10 @@
             width: 100%;
             padding: 1rem;
             margin-bottom: 1rem;
-            background: #333;
-            border: 1px solid #404040;
+            background: #1e1e1e;
+            border: 1px solid #333;
             border-radius: 8px;
-            color: #e0e0e0;
-            font-size: 1rem;
-        }
-
-        .modal-content textarea {
-            min-height: 100px;
-            resize: vertical;
+            color: #fff;
         }
 
         .modal-buttons {
@@ -232,102 +214,81 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .modal-buttons .save-btn {
-            background: #bb86fc;
-            color: #000;
+        .save-btn {
+            background: #7c3aed;
+            color: #fff;
         }
 
-        .modal-buttons .cancel-btn {
-            background: #404040;
-            color: #e0e0e0;
+        .cancel-btn {
+            background: #2a2a2a;
+            color: #fff;
         }
 
-        .contact-seller-btn {
+        .contact-btn {
             width: 100%;
             padding: 1rem;
-            background: #bb86fc;
+            background: #7c3aed;
             border: none;
-            border-radius: 12px;
-            color: #000;
+            border-radius: 8px;
+            color: #fff;
             font-weight: 600;
             cursor: pointer;
             margin-top: 1rem;
-            transition: all 0.3s ease;
         }
 
-        .contact-seller-btn:hover {
-            background: #9b66dc;
-        }
-
-        @media (max-width: 768px) {
-            .shop-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filters {
-                flex-direction: column;
-            }
+        .detail-price {
+            font-size: 2rem;
+            color: #10b981;
+            margin: 1rem 0;
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">🌑 Темная сеть</div>
+        <div class="logo">ORBIT</div>
         <div class="nav-links">
-            <a href="main.html">Главная</a>
-            <a href="messenger.html">Мессенджер</a>
-            <a href="forum.html">Форумы</a>
-            <a href="shop.html">Маркетплейс</a>
+            <a href="main.html">Home</a>
+            <a href="messenger.html">Messenger</a>
+            <a href="forum.html">Forum</a>
+            <a href="shop.html">Market</a>
         </div>
     </nav>
 
-    <div class="shop-container">
-        <div class="shop-header">
-            <h1>Маркетплейс цифровых услуг</h1>
-            <button class="create-listing-btn" onclick="showCreateListingModal()">➕ Создать объявление</button>
+    <div class="container">
+        <div class="header">
+            <h1>Marketplace</h1>
+            <button class="create-btn" onclick="showCreateModal()">+ New Listing</button>
         </div>
 
         <div class="filters">
-            <input type="text" class="filter-input" id="searchInput" placeholder="Поиск по названию...">
+            <input type="text" class="filter-input" id="searchInput" placeholder="Search...">
             <select class="filter-select" id="categoryFilter">
-                <option value="all">Все категории</option>
-                <option value="Разработка">Разработка</option>
-                <option value="Дизайн">Дизайн</option>
-                <option value="Маркетинг">Маркетинг</option>
-                <option value="Тексты">Тексты</option>
-                <option value="Консультации">Консультации</option>
-            </select>
-            <select class="filter-select" id="sortFilter">
-                <option value="newest">Сначала новые</option>
-                <option value="oldest">Сначала старые</option>
-                <option value="price_asc">Цена (по возрастанию)</option>
-                <option value="price_desc">Цена (по убыванию)</option>
+                <option value="all">All Categories</option>
+                <option value="Development">Development</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
             </select>
         </div>
 
-        <div class="listings-grid" id="listingsGrid"></div>
+        <div class="grid" id="listingsGrid"></div>
     </div>
 
-    <div class="modal" id="createListingModal">
+    <div class="modal" id="createModal">
         <div class="modal-content">
-            <h2>Создать объявление</h2>
-            <input type="text" id="newListingTitle" placeholder="Название услуги">
-            <textarea id="newListingDescription" placeholder="Описание..."></textarea>
-            <input type="text" id="newListingPrice" placeholder="Цена (например: 100$)">
-            <select id="newListingCategory">
-                <option value="Разработка">Разработка</option>
-                <option value="Дизайн">Дизайн</option>
-                <option value="Маркетинг">Маркетинг</option>
-                <option value="Тексты">Тексты</option>
-                <option value="Консультации">Консультации</option>
+            <h2>Create Listing</h2>
+            <input type="text" id="title" placeholder="Title">
+            <textarea id="description" placeholder="Description" rows="4"></textarea>
+            <input type="text" id="price" placeholder="Price (e.g. $100)">
+            <select id="category">
+                <option value="Development">Development</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
             </select>
             <div class="modal-buttons">
-                <button class="cancel-btn" onclick="hideCreateListingModal()">Отмена</button>
-                <button class="save-btn" onclick="createListing()">Создать</button>
+                <button class="cancel-btn" onclick="hideCreateModal()">Cancel</button>
+                <button class="save-btn" onclick="createListing()">Create</button>
             </div>
         </div>
     </div>
