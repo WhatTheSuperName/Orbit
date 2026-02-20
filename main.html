@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Темная сеть | Главная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Навигация */
+        .navbar {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #bb86fc, #3700b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: #333;
+            color: #bb86fc;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #bb86fc;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 70%;
+        }
+
+        /* Контент главной */
+        .hero-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            flex: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #bb86fc, #03dac6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #bb86fc;
+            box-shadow: 0 10px 30px rgba(187, 134, 252, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #bb86fc;
+        }
+
+        .feature-desc {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #bb86fc;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🌑 Темная сеть</div>
+        <div class="nav-links">
+            <a href="main.html">Главная</a>
+            <a href="messenger/messenger.html">Мессенджер</a>
+            <a href="forums/forums.html">Форумы</a>
+            <a href="marketplace/marketplace.html">Маркетплейс</a>
+        </div>
+    </nav>
+
+    <main class="hero-section">
+        <h1 class="hero-title">Альтернативный интернет</h1>
+        <p class="hero-subtitle">Децентрализованное пространство для общения, обсуждений и безопасных сделок. Полная анонимность и свобода слова.</p>
+        
+        <div class="features-grid">
+            <a href="messenger/messenger.html" class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h2 class="feature-title">Мессенджер</h2>
+                <p class="feature-desc">Защищенные личные сообщения с профилями. Мгновенная доставка и полное шифрование.</p>
+            </a>
+
+            <a href="forums/forums.html" class="feature-card">
+                <div class="feature-icon">📢</div>
+                <h2 class="feature-title">Форумы</h2>
+                <p class="feature-desc">Создавайте темы, обсуждайте, ставьте лайки. Популярные темы всегда сверху.</p>
+            </a>
+
+            <a href="marketplace/marketplace.html" class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h2 class="feature-title">Маркетплейс</h2>
+                <p class="feature-desc">Цифровые услуги и товары. Связь с продавцом через личные сообщения.</p>
+            </a>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" id="userCount">1,234</div>
+                <div class="stat-label">пользователей</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="topicCount">567</div>
+                <div class="stat-label">тем на форумах</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="listingCount">89</div>
+                <div class="stat-label">активных объявлений</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2024 Темная сеть | Децентрализованное сообщество
+    </footer>
+
+    <script src="mainscript.js"></script>
+</body>
+</html>
